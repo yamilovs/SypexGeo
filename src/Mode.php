@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yamilovs\SypexGeo;
 
+use ReflectionClass;
+
 class Mode
 {
     /**
@@ -26,4 +28,9 @@ class Mode
      * @var int
      */
     public const BATCH = 2;
+
+    public static function getModes(): array
+    {
+        return (new ReflectionClass(static::class))->getConstants();
+    }
 }
