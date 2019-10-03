@@ -8,7 +8,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Yamilovs\SypexGeo\Database\Config;
 use Yamilovs\SypexGeo\Database\Exception\CorruptException;
-use Yamilovs\SypexGeo\Database\Exception\NotCorrectFormatException;
+use Yamilovs\SypexGeo\Database\Exception\WrongFormatException;
 use Yamilovs\SypexGeo\Database\Reader;
 
 class ConfigTest extends TestCase
@@ -42,7 +42,7 @@ class ConfigTest extends TestCase
             ->with(40)
             ->willReturn($content);
 
-        $this->expectException(NotCorrectFormatException::class);
+        $this->expectException(WrongFormatException::class);
 
         new Config($this->reader);
     }

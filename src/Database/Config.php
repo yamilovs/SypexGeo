@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yamilovs\SypexGeo\Database;
 
 use Yamilovs\SypexGeo\Database\Exception\CorruptException;
-use Yamilovs\SypexGeo\Database\Exception\NotCorrectFormatException;
+use Yamilovs\SypexGeo\Database\Exception\WrongFormatException;
 
 class Config
 {
@@ -209,7 +209,7 @@ class Config
         $head = $this->reader->read(static::HEADER_LENGTH);
 
         if (strpos($head, static::IDENTIFIER) !== 0) {
-            throw new NotCorrectFormatException();
+            throw new WrongFormatException();
         }
 
         return $head;

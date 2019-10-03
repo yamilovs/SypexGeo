@@ -6,7 +6,7 @@ namespace Yamilovs\SypexGeo\Database\Exception;
 
 use Exception;
 
-class NotCorrectFormatException extends Exception
+class WrongFormatException extends Exception
 {
     public function __construct()
     {
