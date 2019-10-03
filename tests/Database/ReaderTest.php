@@ -24,7 +24,7 @@ class ReaderTest extends TestCase
 
     public function testDatabaseFileNotFound(): void
     {
-        $path = $this->filesystem->url()."/SxGeoCity.dat";
+        $path = $this->filesystem->url().'/SxGeoCity.dat';
 
         $this->expectException(NotFoundException::class);
 
@@ -34,11 +34,22 @@ class ReaderTest extends TestCase
     public function testDatabaseFileCanNotBeOpened(): void
     {
         $this->filesystem->addChild(new vfsStreamFile('SxGeoCity.dat', 0200));
-
-        $path = $this->filesystem->url()."/SxGeoCity.dat";
+        $path = $this->filesystem->url().'/SxGeoCity.dat';
 
         $this->expectException(UnopenedException::class);
 
         new Reader($path);
+    }
+
+    public function testRead(): void
+    {
+        $content = "I love my cat. It's warm and fat";
+        $this->filesystem->addChild((new vfsStreamFile('test.dat'))->withContent($content));
+        $path = $this->filesystem->url().'/test.dat';
+
+        $reader = new Reader($path);
+
+        $this->assertEquals(substr($content, 0, 6), $reader->read(6));
+        $this->assertEquals(substr($content, 6, 7), $reader->read(7));
     }
 }

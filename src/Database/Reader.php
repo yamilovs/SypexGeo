@@ -26,4 +26,9 @@ class Reader
             throw new UnopenedException($databasePath);
         }
     }
+
+    public function read(int $length): string
+    {
+        return fread($this->handle, $length);
+    }
 }
