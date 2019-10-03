@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yamilovs\SypexGeo\Database;
 
 use Yamilovs\SypexGeo\Database\Exception\UnsupportedModeException;
-use Yamilovs\SypexGeo\Mode;
 
 class Database
 {

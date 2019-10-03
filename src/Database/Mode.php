@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yamilovs\SypexGeo;
+namespace Yamilovs\SypexGeo\Database;
 
 use ReflectionClass;
 

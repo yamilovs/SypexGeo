@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yamilovs\SypexGeo\Database\Exception;
 
 use InvalidArgumentException;
-use Yamilovs\SypexGeo\Mode;
+use Yamilovs\SypexGeo\Database\Mode;
 
 class UnsupportedModeException extends InvalidArgumentException
 {

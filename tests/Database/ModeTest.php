@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yamilovs\SypexGeo\Tests;
+namespace Yamilovs\SypexGeo\Tests\Database;
 
 use PHPUnit\Framework\TestCase;
-use Yamilovs\SypexGeo\Mode;
+use Yamilovs\SypexGeo\Database\Mode;
 
 class ModeTest extends TestCase
 {
