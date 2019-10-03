@@ -13,6 +13,11 @@ class Config
     protected const IDENTIFIER = 'SxG';
 
     /**
+     * Ranges are stored as 3 bytes: IP of the beginning of the range without the first byte
+     */
+    protected const RANGE_BYTES = 3;
+
+    /**
      * Database file version 21 => 2.1
      *
      * @var int
@@ -143,6 +148,13 @@ class Config
     public $packSize;
 
     /**
+     * Length of one database block
+     *
+     * @var int
+     */
+    public $databaseBlockLength;
+
+    /**
      * @var Reader
      */
     protected $reader;
@@ -202,6 +214,8 @@ class Config
         if (0 === $this->byteIndexLength * $this->mainIndexLength * $this->indexBlockCount * $this->databaseItems * $this->timestamp * $this->idBlockLength) {
             throw new CorruptException();
         }
+
+        $this->databaseBlockLength = static::RANGE_BYTES + $this->idBlockLength;
     }
 
     protected function getHead(): string
