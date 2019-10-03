@@ -43,13 +43,47 @@ class ReaderTest extends TestCase
 
     public function testRead(): void
     {
-        $content = "I love my cat. It's warm and fat";
+        $reader = $this->prepareReaderWithFile();
+
+        $this->assertEquals('I love', $reader->read(6));
+        $this->assertEquals(' my cat', $reader->read(7));
+    }
+
+    public function testSeek(): void
+    {
+        $reader = $this->prepareReaderWithFile();
+
+        $reader->seek(29);
+        $this->assertEquals('fat', $reader->read(3));
+
+        $reader->seek(20);
+        $this->assertEquals('warm', $reader->read(4));
+
+        $reader->seek(100);
+        $this->assertEmpty($reader->read(1));
+    }
+
+    public function testTell(): void
+    {
+        $reader = $this->prepareReaderWithFile();
+
+        $this->assertEquals(0, $reader->tell());
+
+        $reader->seek(10);
+        $this->assertEquals(10, $reader->tell());
+
+        $reader->read(5);
+        $this->assertEquals(15, $reader->tell());
+
+        $reader->seek(100);
+        $this->assertEquals(100, $reader->tell());
+    }
+
+    private function prepareReaderWithFile(string $content = "I love my cat. It's warm and fat"): Reader
+    {
         $this->filesystem->addChild((new vfsStreamFile('test.dat'))->withContent($content));
         $path = $this->filesystem->url().'/test.dat';
 
-        $reader = new Reader($path);
-
-        $this->assertEquals(substr($content, 0, 6), $reader->read(6));
-        $this->assertEquals(substr($content, 6, 7), $reader->read(7));
+        return new Reader($path);
     }
 }

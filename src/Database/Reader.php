@@ -31,4 +31,14 @@ class Reader
     {
         return fread($this->handle, $length);
     }
+
+    public function seek(int $pos): int
+    {
+        return fseek($this->handle, $pos);
+    }
+
+    public function tell(): int
+    {
+        return ftell($this->handle);
+    }
 }
