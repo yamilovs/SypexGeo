@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yamilovs\SypexGeo\Database\Exception;
 
 use Exception;
-use Throwable;
 
 class UnopenedException extends Exception
 {
