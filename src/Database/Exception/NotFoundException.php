@@ -9,8 +9,8 @@ use Throwable;
 
 class NotFoundException extends Exception
 {
-    public function __construct(string $databasePath, int $code = 0, Throwable $previous = null)
+    public function __construct(string $databasePath)
     {
-        parent::__construct(sprintf('Sypex Geo database file was not found in path "%s"', $databasePath), $code, $previous);
+        parent::__construct(sprintf('Sypex Geo database file was not found in path "%s"', $databasePath), 404);
     }
 }
