@@ -7,7 +7,7 @@ namespace Yamilovs\SypexGeo\Tests\Database;
 use org\bovigo\vfs\{vfsStream, vfsStreamDirectory, vfsStreamFile};
 use PHPUnit\Framework\TestCase;
 use Yamilovs\SypexGeo\Database\Exception\NotFoundException;
-use Yamilovs\SypexGeo\Database\Exception\UnopenedException;
+use Yamilovs\SypexGeo\Database\Exception\PermissionDeniedException;
 use Yamilovs\SypexGeo\Database\Reader;
 
 class ReaderTest extends TestCase
@@ -36,7 +36,7 @@ class ReaderTest extends TestCase
         $this->filesystem->addChild(new vfsStreamFile('SxGeoCity.dat', 0200));
         $path = $this->filesystem->url().'/SxGeoCity.dat';
 
-        $this->expectException(UnopenedException::class);
+        $this->expectException(PermissionDeniedException::class);
 
         new Reader($path);
     }

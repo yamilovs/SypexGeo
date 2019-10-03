@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yamilovs\SypexGeo\Database;
 
-use Yamilovs\SypexGeo\Database\Exception\{NotFoundException, UnopenedException};
+use Yamilovs\SypexGeo\Database\Exception\{NotFoundException, PermissionDeniedException};
 
 class Reader
 {
@@ -23,7 +23,7 @@ class Reader
         }
 
         if (false === $this->handle = @fopen($databasePath, 'rb')) {
-            throw new UnopenedException($databasePath);
+            throw new PermissionDeniedException($databasePath);
         }
     }
 

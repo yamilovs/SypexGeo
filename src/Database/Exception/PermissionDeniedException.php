@@ -6,7 +6,7 @@ namespace Yamilovs\SypexGeo\Database\Exception;
 
 use Exception;
 
-class UnopenedException extends Exception
+class PermissionDeniedException extends Exception
 {
     public function __construct(string $databasePath)
     {
