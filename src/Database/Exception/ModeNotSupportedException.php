@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Yamilovs\SypexGeo\Database\Exception;
 
-use InvalidArgumentException;
+use LogicException;
 use Yamilovs\SypexGeo\Database\Mode;
 
-class ModeNotSupportedException extends InvalidArgumentException
+class ModeNotSupportedException extends LogicException
 {
     public function __construct(int $mode)
     {
