@@ -154,6 +154,13 @@ class Config
     public $databaseBlockLength;
 
     /**
+     * Array of formats for packed data
+     *
+     * @var array
+     */
+    protected $packFormats;
+
+    /**
      * @var Reader
      */
     protected $reader;
@@ -215,6 +222,9 @@ class Config
         }
 
         $this->databaseBlockLength = static::RANGE_BYTES + $this->idBlockLength;
+        $this->packFormats = $this->packSize
+            ? explode("\0", $this->reader->read($this->packSize))
+            : [];
     }
 
     protected function getHead(): string

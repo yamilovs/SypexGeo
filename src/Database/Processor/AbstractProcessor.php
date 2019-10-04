@@ -31,13 +31,6 @@ abstract class AbstractProcessor implements ProcessorInterface
     protected $config;
 
     /**
-     * Main database packed data
-     *
-     * @var array
-     */
-    protected $data;
-
-    /**
      * Data of first bytes index
      *
      * @var string
@@ -82,9 +75,6 @@ abstract class AbstractProcessor implements ProcessorInterface
 
     protected function init(): void
     {
-        $this->data = $this->config->packSize
-            ? explode("\0", $this->reader->read($this->config->packSize))
-            : [];
         $this->byteIndex = $this->reader->read(static::FIRST_INDEX_BYTES * $this->config->byteIndexLength);
         $this->mainIndex = $this->reader->read(static::MAIN_INDEX_BYTES * $this->config->mainIndexLength);
         $this->databaseBeginPos = $this->reader->tell();
