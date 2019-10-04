@@ -98,10 +98,19 @@ class ConfigTest extends TestCase
             $packSize
         );
 
-        $this->reader->expects($this->once())
+        $packFormats = [
+            'T:id/c2:iso/n2:lat/n2:lon/b:name_ru/b:name_en',
+            'S:country_seek/M:id/b:name_ru/b:name_en/b:iso',
+            'M:region_seek/T:country_id/M:id/N5:lat/N5:lon/b:name_ru/b:name_en'
+        ];
+
+        $this->reader->expects($this->exactly(2)) // read head, then read pack formats
             ->method('read')
-            ->with(40)
-            ->willReturn('SxG'.$head);
+            ->withConsecutive([40], [$packSize])
+            ->willReturnOnConsecutiveCalls(
+                'SxG'.$head,
+                implode("\0", $packFormats)
+            );
 
         $config = new Config($this->reader);
 
@@ -121,5 +130,9 @@ class ConfigTest extends TestCase
         $this->assertEquals($regionSize, $config->regionSize);
         $this->assertEquals($countrySize, $config->countrySize);
         $this->assertEquals($packSize, $config->packSize);
+
+        foreach ($packFormats as $key => $format) {
+            $this->assertEquals($format, $config->packFormats[$key]);
+        }
     }
 }

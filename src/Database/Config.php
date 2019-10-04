@@ -158,7 +158,7 @@ class Config
      *
      * @var array
      */
-    protected $packFormats;
+    public $packFormats;
 
     /**
      * @var Reader
@@ -168,7 +168,9 @@ class Config
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
+
         $this->unpackHead();
+        $this->setUpPackFormats();
     }
 
     protected function unpackHead(): void
@@ -222,6 +224,10 @@ class Config
         }
 
         $this->databaseBlockLength = static::RANGE_BYTES + $this->idBlockLength;
+    }
+
+    protected function setUpPackFormats(): void
+    {
         $this->packFormats = $this->packSize
             ? explode("\0", $this->reader->read($this->packSize))
             : [];
