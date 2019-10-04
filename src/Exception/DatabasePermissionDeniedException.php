@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yamilovs\SypexGeo\Database\Exception;
+namespace Yamilovs\SypexGeo\Exception;
 
 use Exception;
 
-class PermissionDeniedException extends Exception
+class DatabasePermissionDeniedException extends Exception
 {
     public function __construct(string $databasePath)
     {

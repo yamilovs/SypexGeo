@@ -8,7 +8,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Yamilovs\SypexGeo\Database\Config;
 use Yamilovs\SypexGeo\Database\Database;
-use Yamilovs\SypexGeo\Database\Exception\ModeNotSupportedException;
+use Yamilovs\SypexGeo\Exception\ModeIsNotSupportedException;
 use Yamilovs\SypexGeo\Database\Reader;
 
 class DatabaseTest extends TestCase
@@ -38,7 +38,7 @@ class DatabaseTest extends TestCase
 
     public function testUnsupportedMode(): void
     {
-        $this->expectException(ModeNotSupportedException::class);
+        $this->expectException(ModeIsNotSupportedException::class);
 
         $this->database->init(-1);
     }

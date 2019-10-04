@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yamilovs\SypexGeo\Database\Exception;
+namespace Yamilovs\SypexGeo\Exception;
 
 use Exception;
 
-class CorruptException extends Exception
+class DatabaseCorruptException extends Exception
 {
     public function __construct()
     {

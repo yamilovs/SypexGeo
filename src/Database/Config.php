@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Yamilovs\SypexGeo\Database;
 
-use Yamilovs\SypexGeo\Database\Exception\CorruptException;
-use Yamilovs\SypexGeo\Database\Exception\WrongFormatException;
+use Yamilovs\SypexGeo\Exception\{DatabaseCorruptException, DatabaseWrongFormatException};
 
 class Config
 {
@@ -212,7 +211,7 @@ class Config
         $this->packSize = $pack['pack_size'];
 
         if (0 === $this->byteIndexLength * $this->mainIndexLength * $this->indexBlockCount * $this->databaseItems * $this->timestamp * $this->idBlockLength) {
-            throw new CorruptException();
+            throw new DatabaseCorruptException();
         }
 
         $this->databaseBlockLength = static::RANGE_BYTES + $this->idBlockLength;
@@ -223,7 +222,7 @@ class Config
         $head = $this->reader->read(static::HEADER_LENGTH);
 
         if (strpos($head, static::IDENTIFIER) !== 0) {
-            throw new WrongFormatException();
+            throw new DatabaseWrongFormatException();
         }
 
         return $head;

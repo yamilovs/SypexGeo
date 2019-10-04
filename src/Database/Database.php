@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yamilovs\SypexGeo\Database;
 
-use Yamilovs\SypexGeo\Database\Exception\ModeNotSupportedException;
+use Yamilovs\SypexGeo\Exception\ModeIsNotSupportedException;
 
 class Database
 {
@@ -79,7 +79,7 @@ class Database
     public function init(int $mode = Mode::FILE): void
     {
         if (!in_array($mode, Mode::getModes(), true)) {
-            throw new ModeNotSupportedException($mode);
+            throw new ModeIsNotSupportedException($mode);
         }
 
         $this->data = $this->config->packSize

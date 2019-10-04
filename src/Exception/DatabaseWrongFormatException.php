@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yamilovs\SypexGeo\Database\Exception;
+namespace Yamilovs\SypexGeo\Exception;
 
 use Exception;
 
-class WrongFormatException extends Exception
+class DatabaseWrongFormatException extends Exception
 {
     public function __construct()
     {

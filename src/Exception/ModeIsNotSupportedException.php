@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yamilovs\SypexGeo\Database\Exception;
+namespace Yamilovs\SypexGeo\Exception;
 
 use LogicException;
 use Yamilovs\SypexGeo\Database\Mode;
 
-class ModeNotSupportedException extends LogicException
+class ModeIsNotSupportedException extends LogicException
 {
     public function __construct(int $mode)
     {

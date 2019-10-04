@@ -6,10 +6,8 @@ namespace Yamilovs\SypexGeo\Tests\Database;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Yamilovs\SypexGeo\Database\Config;
-use Yamilovs\SypexGeo\Database\Exception\CorruptException;
-use Yamilovs\SypexGeo\Database\Exception\WrongFormatException;
-use Yamilovs\SypexGeo\Database\Reader;
+use Yamilovs\SypexGeo\Database\{Config, Reader};
+use Yamilovs\SypexGeo\Exception\{DatabaseCorruptException, DatabaseWrongFormatException};
 
 class ConfigTest extends TestCase
 {
@@ -42,7 +40,7 @@ class ConfigTest extends TestCase
             ->with(40)
             ->willReturn($content);
 
-        $this->expectException(WrongFormatException::class);
+        $this->expectException(DatabaseWrongFormatException::class);
 
         new Config($this->reader);
     }
@@ -56,7 +54,7 @@ class ConfigTest extends TestCase
             ->with(40)
             ->willReturn('SxG'.$head);
 
-        $this->expectException(CorruptException::class);
+        $this->expectException(DatabaseCorruptException::class);
 
         new Config($this->reader);
     }
