@@ -6,7 +6,7 @@ namespace Yamilovs\SypexGeo\Tests\Database;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Yamilovs\SypexGeo\Database\{Config, Reader};
+use Yamilovs\SypexGeo\Database\{Config, PackFormat, Reader};
 use Yamilovs\SypexGeo\Exception\{DatabaseCorruptException, DatabaseWrongFormatException};
 
 class ConfigTest extends TestCase
@@ -99,9 +99,9 @@ class ConfigTest extends TestCase
         );
 
         $packFormats = [
-            'T:id/c2:iso/n2:lat/n2:lon/b:name_ru/b:name_en',
-            'S:country_seek/M:id/b:name_ru/b:name_en/b:iso',
-            'M:region_seek/T:country_id/M:id/N5:lat/N5:lon/b:name_ru/b:name_en'
+            PackFormat::COUNTRY => 'T:id/c2:iso/n2:lat/n2:lon/b:name_ru/b:name_en',
+            PackFormat::REGION => 'S:country_seek/M:id/b:name_ru/b:name_en/b:iso',
+            PackFormat::CITY => 'M:region_seek/T:country_id/M:id/N5:lat/N5:lon/b:name_ru/b:name_en'
         ];
 
         $this->reader->expects($this->exactly(2)) // read head, then read pack formats
