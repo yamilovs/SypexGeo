@@ -64,24 +64,48 @@ class AbstractProcessorTest extends TestCase
         $processor->validateIp('fat_cat');
     }
 
-    public function testUnpack(): void
+    public function unpackDataProvider(): array
+    {
+        return [
+            ['t:foo', 'c', 1, 1],
+            ['t:foo', 'c', -2, -2],
+            ['T:foo', 'C', 3, 3],
+            ['T:foo', 'C', -4, 2 ** 8 - 4],
+            ['s:foo', 'l', 5, 5],
+            ['s:foo', 'l', -6, -6],
+            ['S:foo', 'L', 7, 7],
+            ['S:foo', 'L', -8, 2 ** 16 - 8],
+            ['n1:foo', 's', 123, 12.3],
+            ['n5:foo', 's', 1, 0.00001],
+            ['n2:foo', 's', 123, 1.23],
+            ['n2:foo', 's', 123, 1.23],
+            ['n0:foo', 's', 2 ** 16, 0],
+            ['n0:foo', 's', -9, -9],
+            ['n1:foo', 's', -123, -12.3],
+            ['n1:foo', 's', -123, -12.3],
+            ['N0:foo', 'l', 2 ** 16, 2 ** 16],
+            ['N0:foo', 'l', -456, -456],
+            ['N3:foo', 'l', -789, -0.789],
+            ['c2:iso', 'a2', 'RU', 'RU'],
+            ['b:foo', 'a4', 'foo', 'foo'], // a4 = three charters + "\0"
+            ['b:russian', 'a7', 'бар', 'бар'], // a7 = 6 (three Russian charters) + "\0"
+        ];
+    }
+
+    /**
+     * @dataProvider unpackDataProvider
+     * @param $value mixed
+     * @param $expected mixed
+     */
+    public function testUnpack(string $unpackFormat, string $packFormat, $value, $expected): void
     {
         $processor = $this->createProcessor();
-        $this->config->packFormats = [
-            PackFormat::COUNTRY => 'T:id/c2:iso/n2:lat/n2:lon/b:name_ru/b:name_en',
-        ];
+        $this->config->packFormats = [$unpackFormat];
+        $pack = ($value) ? pack($packFormat, $value) : null;
+        $key = substr($unpackFormat, strpos($unpackFormat, ':') + 1);
 
-        [$id, $iso, $lat, $lon, $nameRu, $nameEn] = [5, 'RU', 111, 222, 'Имя', 'Name'];
-        $pack = pack('Ca2ssa7a7', $id, $iso, $lat, $lon, $nameRu, $nameEn);
+        $result = $processor->unpack(0, $pack);
 
-        $result = $processor->unpack(PackFormat::COUNTRY, $pack);
-
-        $this->assertIsArray($result);
-        $this->assertEquals($id, $result['id']);
-        $this->assertEquals($iso, $result['iso']);
-        $this->assertEquals((float)substr_replace((string)$lat, '.', 1, 0), $result['lat']);
-        $this->assertEquals((float)substr_replace((string)$lon, '.', 1, 0), $result['lon']);
-        $this->assertEquals($nameRu, $result['name_ru']);
-        $this->assertEquals($nameEn, $result['name_en']);
+        $this->assertEquals($expected, $result[$key]);
     }
 }
