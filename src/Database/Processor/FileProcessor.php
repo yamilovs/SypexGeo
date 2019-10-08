@@ -20,19 +20,14 @@ class FileProcessor extends AbstractProcessor
         // TODO: Implement getCountry() method.
     }
 
-    protected function readData(int $start, int $max, int $packFormat): array
+    protected function getRawData(int $packFormat, int $start, int $length): string
     {
-        $raw = '';
+        $begin = (PackFormat::REGION === $packFormat)
+            ? $this->regionBeginPos
+            : $this->cityBeginPos;
 
-        if ($start && $max) {
-            $begin = (PackFormat::REGION === $packFormat)
-                ? $this->regionBeginPos
-                : $this->cityBeginPos;
+        $this->reader->seek($begin + $start);
 
-            $this->reader->seek($begin + $start);
-            $raw = $this->reader->read($max);
-        }
-
-        return $this->unpack($packFormat, $raw);
+        return $this->reader->read($length);
     }
 }

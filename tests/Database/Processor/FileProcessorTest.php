@@ -39,33 +39,11 @@ class FileProcessorTest extends TestCase
                 }
             }
 
-            public function readData(int $start, int $max, int $packFormat): array
+            public function getRawData(int $packFormat, int $start, int $length): string
             {
-                return parent::readData($start, $max, $packFormat);
+                return parent::getRawData($packFormat, $start, $length);
             }
         };
-    }
-
-    public function readZeroDataProvider(): array
-    {
-        return [
-            [0, 1],
-            [0, 0],
-            [1, 0],
-        ];
-    }
-
-    /**
-     * @dataProvider readZeroDataProvider
-     */
-    public function testReadZeroData(int $start, int $max): void
-    {
-        $processor = $this->createProcessor();
-        $this->config->packFormats = ['t:foo'];
-
-        $result = $processor->readData($start, $max, 0);
-
-        $this->assertEquals(0, $result['foo']);
     }
 
     public function readDataProvider(): array
@@ -80,25 +58,23 @@ class FileProcessorTest extends TestCase
     /**
      * @dataProvider readDataProvider
      */
-    public function testReadRegionData(int $packFormat, int $regionPos, int $cityPos, int $expectedSeek): void
+    public function testGetRawData(int $packFormat, int $regionPos, int $cityPos, int $expectedSeek): void
     {
         $processor = $this->createProcessor();
         $processor->regionBeginPos = $regionPos;
         $processor->cityBeginPos = $cityPos;
         $this->config->packFormats = [$packFormat => 't:foo'];
         $start = 3;
-        $max = 1;
+        $length = 1;
 
         $this->reader->expects($this->once())
             ->method('seek')
             ->with($expectedSeek + $start);
         $this->reader->expects($this->once())
             ->method('read')
-            ->with($max)
+            ->with($length)
             ->willReturn(pack('c', 100));
 
-        $result = $processor->readData($start, $max, $packFormat);
-
-        $this->assertEquals(100, $result['foo']);
+        $processor->getRawData($packFormat, $start, $length);
     }
 }
