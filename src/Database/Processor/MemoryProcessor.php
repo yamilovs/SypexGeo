@@ -56,4 +56,9 @@ class MemoryProcessor extends AbstractProcessor
 
         return substr($db, $start, $length);
     }
+
+    protected function searchIndex(string $ip, int $min, int $max): int
+    {
+        // TODO: Same as FileProcessor::searchIndex()
+    }
 }
