@@ -46,12 +46,24 @@ class FileProcessorTest extends TestCase
         };
     }
 
-    public function testReadZeroData(): void
+    public function readZeroDataProvider(): array
+    {
+        return [
+            [0, 1],
+            [0, 0],
+            [1, 0],
+        ];
+    }
+
+    /**
+     * @dataProvider readZeroDataProvider
+     */
+    public function testReadZeroData(int $start, int $max): void
     {
         $processor = $this->createProcessor();
         $this->config->packFormats = ['t:foo'];
 
-        $result = $processor->readData(0, 0, 0);
+        $result = $processor->readData($start, $max, 0);
 
         $this->assertEquals(0, $result['foo']);
     }
