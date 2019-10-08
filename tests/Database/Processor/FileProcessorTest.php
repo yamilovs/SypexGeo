@@ -44,9 +44,9 @@ class FileProcessorTest extends TestCase
                 return parent::getRawData($packFormat, $start, $length);
             }
 
-            public function getFirstByteIndexBlockPosition(int $ip1n): array
+            public function getFirstByteIndexBlockRange(int $ip1n): array
             {
-                return parent::getFirstByteIndexBlockPosition($ip1n);
+                return parent::getFirstByteIndexBlockRange($ip1n);
             }
         };
     }
@@ -88,7 +88,7 @@ class FileProcessorTest extends TestCase
         $processor = $this->createProcessor();
         $processor->byteIndex = pack('NN', 100, 200);
 
-        $result = $processor->getFirstByteIndexBlockPosition(1);
+        $result = $processor->getFirstByteIndexBlockRange(1);
 
         $this->assertIsArray($result);
         $this->assertEquals([100, 200], $result);

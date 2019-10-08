@@ -49,7 +49,7 @@ class FileProcessor extends AbstractProcessor
         return $min;
     }
 
-    protected function getFirstByteIndexBlockPosition(int $ip1n): array
+    protected function getFirstByteIndexBlockRange(int $ip1n): array
     {
         return array_values(
             unpack(

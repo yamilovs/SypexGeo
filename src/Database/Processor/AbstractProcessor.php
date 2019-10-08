@@ -251,5 +251,5 @@ abstract class AbstractProcessor implements ProcessorInterface
      *
      * @return array[min, max] block position
      */
-    abstract protected function getFirstByteIndexBlockPosition(int $ip1n): array;
+    abstract protected function getFirstByteIndexBlockRange(int $ip1n): array;
 }

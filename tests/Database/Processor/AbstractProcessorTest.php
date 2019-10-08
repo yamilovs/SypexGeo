@@ -38,7 +38,7 @@ class AbstractProcessorTest extends TestCase
             public function getCity(string $ip): City {}
             public function getCountry(string $ip): Country {}
             protected function searchIndex(string $ip, int $min, int $max): int {}
-            protected function getFirstByteIndexBlockPosition(int $ip1n): array {}
+            protected function getFirstByteIndexBlockRange(int $ip1n): array {}
 
             protected function getRawData(int $packFormat, int $start, int $length): string
             {
