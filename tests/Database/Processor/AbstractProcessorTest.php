@@ -37,6 +37,8 @@ class AbstractProcessorTest extends TestCase
         return new class($this->reader, $this->config) extends AbstractProcessor {
             public function getCity(string $ip): City {}
             public function getCountry(string $ip): Country {}
+            protected function searchIndex(string $ip, int $min, int $max): int {}
+
             protected function getRawData(int $packFormat, int $start, int $length): string
             {
                 $s = sprintf('%s%s%s', $start, $length, $packFormat);
