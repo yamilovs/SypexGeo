@@ -86,9 +86,25 @@ class AbstractProcessorTest extends TestCase
             ['N0:foo', 'l', 2 ** 16, 2 ** 16],
             ['N0:foo', 'l', -456, -456],
             ['N3:foo', 'l', -789, -0.789],
+            ['m:foo', 'l', -5, -5],
+            ['m:foo', 'l', 2 ** 23, -2 ** 23], // 23 bit + sign
+            ['M:foo', 'L', 2 ** 24, 0], // 24 bit
+            ['M:foo', 'L', -1, 2 ** 24 - 1],
+            ['i:foo', 'l', -10, -10], // negative int
+            ['i:foo', 'l', 2 ** 31, -2 ** 31], // 31 bit + sign
+            ['I:foo', 'L', 2 ** 32, 0], // 32 bit
+            ['I:foo', 'L', -1, 2 ** 32 - 1],
+            ['f:foo', 'f', 7E-10, 7E-10],
+            ['f:foo', 'f', 1.2e3, 1.2e3],
+            ['d:foo', 'd', 7E-10, 7E-10],
+            ['d:foo', 'd', 1.2e3, 1.2e3],
+            ['d:foo', 'd', 1.234, 1.234],
             ['c2:iso', 'a2', 'RU', 'RU'],
             ['b:foo', 'a4', 'foo', 'foo'], // a4 = three charters + "\0"
             ['b:russian', 'a7', 'бар', 'бар'], // a7 = 6 (three Russian charters) + "\0"
+            ['b:foo', null, null, ''],
+            ['c:foo', null, null, ''],
+            ['d:foo', null, null, 0],
         ];
     }
 
@@ -97,7 +113,7 @@ class AbstractProcessorTest extends TestCase
      * @param $value mixed
      * @param $expected mixed
      */
-    public function testUnpack(string $unpackFormat, string $packFormat, $value, $expected): void
+    public function testUnpack(string $unpackFormat, ?string $packFormat, $value, $expected): void
     {
         $processor = $this->createProcessor();
         $this->config->packFormats = [$unpackFormat];
