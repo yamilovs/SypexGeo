@@ -40,4 +40,22 @@ class BatchProcessor extends AbstractProcessor
     {
         // TODO: Implement getCountry() method.
     }
+
+    protected function searchIndex(string $ip, int $min, int $max): int
+    {
+        $packedIp = $this->getPackedIp($ip);
+
+        while ($max - $min > 8) {
+            $offset = ($min + $max) >> 1;
+
+            if ($packedIp > $this->mainIndexArray[$offset]) {
+                $min = $offset;
+            } else {
+                $max = $offset;
+            }
+        }
+        while ($packedIp > $this->mainIndexArray[$min] && $min++ < $max) {}
+
+        return $min;
+    }
 }
