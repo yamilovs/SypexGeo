@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Yamilovs\SypexGeo\City;
 use Yamilovs\SypexGeo\Country;
 use Yamilovs\SypexGeo\Database\Config;
-use Yamilovs\SypexGeo\Database\PackFormat;
 use Yamilovs\SypexGeo\Database\Processor\AbstractProcessor;
 use Yamilovs\SypexGeo\Database\Processor\ProcessorInterface;
 use Yamilovs\SypexGeo\Database\Reader;
@@ -38,6 +37,7 @@ class AbstractProcessorTest extends TestCase
         return new class($this->reader, $this->config) extends AbstractProcessor {
             public function getCity(string $ip): City {}
             public function getCountry(string $ip): Country {}
+            protected function readData(int $start, int $max, int $packFormat): array {}
 
             public function validateIp(string $ip): void
             {
