@@ -99,7 +99,7 @@ abstract class AbstractProcessor implements ProcessorInterface
      *
      * @return int
      */
-    protected function searchPos(string $database, string $ip, int $min, int $max): int
+    protected function getRange(string $str, string $ip, int $min, int $max): int
     {
         $pIp = $this->getPackedIp($ip);
 
@@ -109,19 +109,19 @@ abstract class AbstractProcessor implements ProcessorInterface
             while ($max - $min > 8) {
                 $offset = $min + $max >> 1;
 
-                if ($pIp > substr($database, $offset * $this->config->databaseBlockLength, 3)) {
+                if ($pIp > substr($str, $offset * $this->config->databaseBlockLength, 3)) {
                     $min = $offset;
                 } else {
                     $max = $offset;
                 }
             }
-            while ($pIp >= substr($database, $min * $this->config->databaseBlockLength, 3) && ++$min < $max) {}
+            while ($pIp >= substr($str, $min * $this->config->databaseBlockLength, 3) && ++$min < $max) {}
 
         } else {
             $min++;
         }
 
-        return hexdec(bin2hex(substr($database, $min * $this->config->databaseBlockLength - $this->config->idBlockLength, $this->config->idBlockLength)));
+        return hexdec(bin2hex(substr($str, $min * $this->config->databaseBlockLength - $this->config->idBlockLength, $this->config->idBlockLength)));
     }
 
     /**

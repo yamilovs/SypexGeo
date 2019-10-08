@@ -44,9 +44,9 @@ class AbstractProcessorTest extends TestCase
                 parent::validateIp($ip);
             }
 
-            public function searchPos(string $database, string $ip, int $min, int $max): int
+            public function getRange(string $str, string $ip, int $min, int $max): int
             {
-                parent::searchPos($database, $ip, $min, $max);
+                parent::getRange($str, $ip, $min, $max);
             }
 
             public function unpack(int $packFormat, ?string $item = null): array
