@@ -8,7 +8,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Yamilovs\SypexGeo\Database\Config;
 use Yamilovs\SypexGeo\Database\PackFormat;
-use Yamilovs\SypexGeo\Database\Processor\FileProcessor;
 use Yamilovs\SypexGeo\Database\Processor\MemoryProcessor;
 use Yamilovs\SypexGeo\Database\Reader;
 
@@ -40,56 +39,33 @@ class MemoryProcessorTest extends TestCase
                 }
             }
 
-            public function readData(int $start, int $max, int $packFormat): array
+            public function getRawData(int $packFormat, int $start, int $length): string
             {
-                return parent::readData($start, $max, $packFormat);
+                return parent::getRawData($packFormat, $start, $length);
             }
         };
-    }
-
-    public function readZeroDataProvider(): array
-    {
-        return [
-            [0, 1],
-            [0, 0],
-            [1, 0],
-        ];
-    }
-
-    /**
-     * @dataProvider readZeroDataProvider
-     */
-    public function testReadZeroData(int $start, int $max): void
-    {
-        $processor = $this->createProcessor();
-        $this->config->packFormats = ['t:foo'];
-
-        $result = $processor->readData($start, $max, 0);
-
-        $this->assertEquals(0, $result['foo']);
     }
 
     public function readDataProvider(): array
     {
         return [
-            [PackFormat::COUNTRY, 5, 7, 7],
-            [PackFormat::REGION, 5, 7, 5],
-            [PackFormat::CITY, 5, 7, 7],
+            [PackFormat::COUNTRY, 'foo', 'bar', 'bar'],
+            [PackFormat::REGION, 'foo', 'bar', 'foo'],
+            [PackFormat::CITY, 'foo', 'bar', 'bar'],
         ];
     }
 
     /**
      * @dataProvider readDataProvider
      */
-    public function testReadRegionData(int $packFormat, int $regionInt, int $cityInt, int $expected): void
+    public function testGetRawData(int $packFormat, string $regionDatabase, string $cityDatabase, string $expected): void
     {
         $processor = $this->createProcessor();
-        $processor->regionDatabase = pack('xc', $regionInt);
-        $processor->cityDatabase = pack('xc', $cityInt);
-        $this->config->packFormats = [$packFormat => 't:foo'];
+        $processor->regionDatabase = $regionDatabase;
+        $processor->cityDatabase = $cityDatabase;
 
-        $result = $processor->readData(1, 1, $packFormat);
+        $result = $processor->getRawData($packFormat, 0, strlen($expected));
 
-        $this->assertEquals($expected, $result['foo']);
+        $this->assertEquals($expected, $result);
     }
 }

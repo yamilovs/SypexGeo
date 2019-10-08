@@ -50,15 +50,10 @@ class MemoryProcessor extends AbstractProcessor
         // TODO: Implement getCountry() method.
     }
 
-    protected function readData(int $start, int $max, int $packFormat): array
+    protected function getRawData(int $packFormat, int $start, int $length): string
     {
-        $raw = '';
+        $db = PackFormat::REGION === $packFormat ? $this->regionDatabase : $this->cityDatabase;
 
-        if ($start && $max) {
-            $db = PackFormat::REGION === $packFormat ? $this->regionDatabase : $this->cityDatabase;
-            $raw = substr($db, $start, $max);
-        }
-
-        return $this->unpack($packFormat, $raw);
+        return substr($db, $start, $length);
     }
 }
