@@ -229,5 +229,16 @@ abstract class AbstractProcessor implements ProcessorInterface
         return $unpacked;
     }
 
-    abstract protected function readData(int $start, int $max, int $packFormat): array;
+    protected function readData(int $start, int $length, int $packFormat): array
+    {
+        $raw = '';
+
+        if ($start && $length) {
+            $raw = $this->getRawData($packFormat, $start, $length);
+        }
+
+        return $this->unpack($packFormat, $raw);
+    }
+
+    abstract protected function getRawData(int $packFormat, int $start, int $length): string;
 }

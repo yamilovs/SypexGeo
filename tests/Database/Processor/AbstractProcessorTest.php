@@ -37,7 +37,11 @@ class AbstractProcessorTest extends TestCase
         return new class($this->reader, $this->config) extends AbstractProcessor {
             public function getCity(string $ip): City {}
             public function getCountry(string $ip): Country {}
-            protected function readData(int $start, int $max, int $packFormat): array {}
+            protected function getRawData(int $packFormat, int $start, int $length): string
+            {
+                $s = sprintf('%s%s%s', $start, $length, $packFormat);
+                return pack(sprintf('a%d', strlen($s) + 1), $s);
+            }
 
             public function validateIp(string $ip): void
             {
@@ -52,6 +56,11 @@ class AbstractProcessorTest extends TestCase
             public function unpack(int $packFormat, ?string $item = null): array
             {
                 return parent::unpack($packFormat, $item);
+            }
+
+            public function readData(int $start, int $length, int $packFormat): array
+            {
+                return parent::readData($start, $length, $packFormat);
             }
         };
     }
@@ -123,5 +132,37 @@ class AbstractProcessorTest extends TestCase
         $result = $processor->unpack(0, $pack);
 
         $this->assertEquals($expected, $result[$key]);
+    }
+
+    public function readZeroDataProvider(): array
+    {
+        return [
+            [0, 1],
+            [0, 0],
+            [1, 0],
+        ];
+    }
+
+    /**
+     * @dataProvider readZeroDataProvider
+     */
+    public function testReadZeroData(int $start, int $max): void
+    {
+        $processor = $this->createProcessor();
+        $this->config->packFormats = ['t:foo'];
+
+        $result = $processor->readData($start, $max, 0);
+
+        $this->assertEquals(0, $result['foo']);
+    }
+
+    public function testReadRegionData(): void
+    {
+        $processor = $this->createProcessor();
+        $this->config->packFormats = ['b:foo'];
+
+        $result = $processor->readData(1, 1, 0);
+
+        $this->assertEquals('110', $result['foo']); // string contains readData parameters.
     }
 }
