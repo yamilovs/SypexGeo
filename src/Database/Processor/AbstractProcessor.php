@@ -243,4 +243,13 @@ abstract class AbstractProcessor implements ProcessorInterface
     abstract protected function getRawData(int $packFormat, int $start, int $length): string;
 
     abstract protected function searchIndex(string $ip, int $min, int $max): int;
+
+    /**
+     * Find the data block in the first byte index
+     *
+     * @param int $ip1n first ip byte
+     *
+     * @return array[min, max] block position
+     */
+    abstract protected function getFirstByteIndexBlockPosition(int $ip1n): array;
 }

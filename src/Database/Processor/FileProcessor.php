@@ -48,4 +48,14 @@ class FileProcessor extends AbstractProcessor
 
         return $min;
     }
+
+    protected function getFirstByteIndexBlockPosition(int $ip1n): array
+    {
+        return array_values(
+            unpack(
+                "N2",
+                substr($this->byteIndex, ($ip1n - 1) * static::FIRST_INDEX_BYTES, static::FIRST_INDEX_BYTES * 2)
+            )
+        );
+    }
 }
