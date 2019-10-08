@@ -61,4 +61,9 @@ class MemoryProcessor extends AbstractProcessor
     {
         // TODO: Same as FileProcessor::searchIndex()
     }
+
+    protected function getFirstByteIndexBlockPosition(int $ip1n): array
+    {
+        // TODO: Same as FileProcessor::getFirstByteIndexBlockPosition()
+    }
 }
