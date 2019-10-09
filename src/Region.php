@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yamilovs\SypexGeo;
 
-class City
+class Region
 {
     /**
      * @var int
@@ -12,14 +12,9 @@ class City
     protected $id;
 
     /**
-     * @var float
+     * @var string
      */
-    protected $latitude;
-
-    /**
-     * @var float
-     */
-    protected $longitude;
+    protected $iso;
 
     /**
      * @var string
@@ -36,33 +31,21 @@ class City
         return $this->id;
     }
 
-    public function setId(int $id): City
+    public function setId(int $id): Region
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getLatitude(): ?float
+    public function getIso(): ?string
     {
-        return $this->latitude;
+        return $this->iso;
     }
 
-    public function setLatitude(float $latitude): City
+    public function setIso(string $iso): Region
     {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    public function getLongitude(): ?float
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(float $longitude): City
-    {
-        $this->longitude = $longitude;
+        $this->iso = $iso;
 
         return $this;
     }
@@ -72,7 +55,7 @@ class City
         return $this->nameRu;
     }
 
-    public function setNameRu(string $nameRu): City
+    public function setNameRu(string $nameRu): Region
     {
         $this->nameRu = $nameRu;
 
@@ -84,7 +67,7 @@ class City
         return $this->nameEn;
     }
 
-    public function setNameEn(string $nameEn): City
+    public function setNameEn(string $nameEn): Region
     {
         $this->nameEn = $nameEn;
 
