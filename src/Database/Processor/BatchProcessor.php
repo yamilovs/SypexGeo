@@ -63,4 +63,9 @@ class BatchProcessor extends AbstractProcessor
 
         return $min;
     }
+
+    protected function getFirstByteIndexBlockRange(int $ip1n): array
+    {
+        return [$this->byteIndexArray[$ip1n-1], $this->byteIndexArray[$ip1n]];
+    }
 }
