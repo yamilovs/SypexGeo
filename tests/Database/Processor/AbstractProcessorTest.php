@@ -51,9 +51,9 @@ class AbstractProcessorTest extends TestCase
                 parent::validateIp($ip);
             }
 
-            public function getDatabaseBlockPosition(string $str, string $ip, int $min, int $max): int
+            public function searchDatabaseBlockPosition(string $str, string $ip, int $min, int $max): int
             {
-                parent::getDatabaseBlockPosition($str, $ip, $min, $max);
+                parent::searchDatabaseBlockPosition($str, $ip, $min, $max);
             }
 
             public function unpack(int $packFormat, ?string $item = null): array

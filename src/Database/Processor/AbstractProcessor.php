@@ -99,7 +99,7 @@ abstract class AbstractProcessor implements ProcessorInterface
      *
      * @return int
      */
-    protected function getDatabaseBlockPosition(string $str, string $ip, int $min, int $max): int
+    protected function searchDatabaseBlockPosition(string $str, string $ip, int $min, int $max): int
     {
         $pIp = $this->getPackedIp($ip);
 
