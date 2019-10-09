@@ -57,9 +57,9 @@ class MemoryProcessor extends AbstractProcessor
         return substr($db, $start, $length);
     }
 
-    protected function searchIndex(string $ip, int $min, int $max): int
+    protected function getBlockPositionIndex(string $ip, int $min, int $max): int
     {
-        // TODO: Same as FileProcessor::searchIndex()
+        // TODO: Same as FileProcessor::getBlockPositionIndex()
     }
 
     protected function getFirstByteIndexBlockRange(int $ip1n): array

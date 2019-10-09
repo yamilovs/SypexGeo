@@ -37,7 +37,7 @@ class AbstractProcessorTest extends TestCase
         return new class($this->reader, $this->config) extends AbstractProcessor {
             public function getCity(string $ip): City {}
             public function getCountry(string $ip): Country {}
-            protected function searchIndex(string $ip, int $min, int $max): int {}
+            protected function getBlockPositionIndex(string $ip, int $min, int $max): int {}
             protected function getFirstByteIndexBlockRange(int $ip1n): array {}
 
             protected function getRawData(int $packFormat, int $start, int $length): string
@@ -51,9 +51,9 @@ class AbstractProcessorTest extends TestCase
                 parent::validateIp($ip);
             }
 
-            public function getRange(string $str, string $ip, int $min, int $max): int
+            public function getDatabaseBlockPosition(string $str, string $ip, int $min, int $max): int
             {
-                parent::getRange($str, $ip, $min, $max);
+                parent::getDatabaseBlockPosition($str, $ip, $min, $max);
             }
 
             public function unpack(int $packFormat, ?string $item = null): array

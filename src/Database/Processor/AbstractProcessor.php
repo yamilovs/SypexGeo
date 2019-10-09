@@ -99,7 +99,7 @@ abstract class AbstractProcessor implements ProcessorInterface
      *
      * @return int
      */
-    protected function getRange(string $str, string $ip, int $min, int $max): int
+    protected function getDatabaseBlockPosition(string $str, string $ip, int $min, int $max): int
     {
         $pIp = $this->getPackedIp($ip);
 
@@ -242,7 +242,7 @@ abstract class AbstractProcessor implements ProcessorInterface
 
     abstract protected function getRawData(int $packFormat, int $start, int $length): string;
 
-    abstract protected function searchIndex(string $ip, int $min, int $max): int;
+    abstract protected function getBlockPositionIndex(string $ip, int $min, int $max): int;
 
     /**
      * Find the data block in the first byte index

@@ -31,7 +31,7 @@ class FileProcessor extends AbstractProcessor
         return $this->reader->read($length);
     }
 
-    protected function searchIndex(string $ip, int $min, int $max): int
+    protected function getBlockPositionIndex(string $ip, int $min, int $max): int
     {
         $packedIp = $this->getPackedIp($ip);
 
