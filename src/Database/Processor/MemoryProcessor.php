@@ -66,4 +66,9 @@ class MemoryProcessor extends AbstractProcessor
     {
         // TODO: Same as FileProcessor::getFirstByteIndexBlockRange()
     }
+
+    protected function getDatabaseBlockPosition(string $ip, int $min, int $max): int
+    {
+        return $this->searchDatabaseBlockPosition($this->database, $ip, $min, $max);
+    }
 }

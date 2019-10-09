@@ -58,4 +58,13 @@ class FileProcessor extends AbstractProcessor
             )
         );
     }
+
+    protected function getDatabaseBlockPosition(string $ip, int $min, int $max): int
+    {
+        $length = $max - $min;
+
+        $this->reader->seek($this->databaseBeginPos + $min * $this->config->databaseBlockLength);
+
+        return $this->searchDatabaseBlockPosition($this->reader->read($length * $this->config->databaseBlockLength), $ip, 0, $length);
+    }
 }

@@ -68,4 +68,9 @@ class BatchProcessor extends AbstractProcessor
     {
         return [$this->byteIndexArray[$ip1n-1], $this->byteIndexArray[$ip1n]];
     }
+
+    protected function getDatabaseBlockPosition(string $ip, int $min, int $max): int
+    {
+        // TODO: Same as FileProcessor::getDatabaseBlockPosition()
+    }
 }

@@ -240,6 +240,52 @@ abstract class AbstractProcessor implements ProcessorInterface
         return $this->unpack($packFormat, $raw);
     }
 
+    protected function getBlockPosition(string $ip): ?int
+    {
+        $ip1n = (int)$ip; // Get first ip byte
+
+        if (0 === $ip1n || 10 === $ip1n || 127 === $ip1n ||$ip1n >= $this->config->byteIndexLength) {
+            return null;
+        }
+
+        [$rangeMin, $rangeMax] = $this->getFirstByteIndexBlockRange($ip1n);
+
+        if ($rangeMax - $rangeMin > $this->config->indexBlockCount) {
+
+            // Looking for the block position in the main index
+            $positionIndex = $this->getIndexBlockPosition(
+                $ip,
+                (int)floor($rangeMin / $this->config->indexBlockCount),
+                (int)floor($rangeMax / $this->config->indexBlockCount) - 1
+            );
+
+            // We found the block number in which to look for IP, now we find the desired block in the database
+            $min = $positionIndex > 0 ?
+                $positionIndex * $this->config->indexBlockCount
+                : 0;
+            $max = $positionIndex > $this->config->mainIndexLength
+                ? $this->config->databaseItems
+                : ($positionIndex + 1) * $this->config->indexBlockCount;
+
+            // Need to check that block did not go beyond the first byte's block
+            if ($min < $rangeMin) {
+                $min = $rangeMin;
+            }
+            if ($max > $rangeMax) {
+                $max = $rangeMax;
+            }
+
+        } else {
+            $min = $rangeMin;
+            $max = $rangeMax;
+        }
+
+        // Find the desired range in the database
+        return $this->getDatabaseBlockPosition($ip, $min, $max);
+    }
+
+    abstract protected function getDatabaseBlockPosition(string $ip, int $min, int $max): int;
+
     /**
      * Reading raw packed data from the database
      */
