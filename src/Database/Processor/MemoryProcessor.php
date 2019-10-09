@@ -50,16 +50,16 @@ class MemoryProcessor extends AbstractProcessor
         // TODO: Implement getCountry() method.
     }
 
-    protected function getRawData(int $packFormat, int $start, int $length): string
+    protected function readRawData(int $packFormat, int $start, int $length): string
     {
         $db = PackFormat::REGION === $packFormat ? $this->regionDatabase : $this->cityDatabase;
 
         return substr($db, $start, $length);
     }
 
-    protected function getBlockPositionIndex(string $ip, int $min, int $max): int
+    protected function getIndexBlockPosition(string $ip, int $min, int $max): int
     {
-        // TODO: Same as FileProcessor::getBlockPositionIndex()
+        // TODO: Same as FileProcessor::getIndexBlockPosition()
     }
 
     protected function getFirstByteIndexBlockRange(int $ip1n): array

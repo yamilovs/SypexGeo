@@ -41,12 +41,12 @@ class BatchProcessor extends AbstractProcessor
         // TODO: Implement getCountry() method.
     }
 
-    protected function getRawData(int $packFormat, int $start, int $length): string
+    protected function readRawData(int $packFormat, int $start, int $length): string
     {
-        // TODO: Same as FileProcessor::getRawData()
+        // TODO: Same as FileProcessor::readRawData()
     }
 
-    protected function getBlockPositionIndex(string $ip, int $min, int $max): int
+    protected function getIndexBlockPosition(string $ip, int $min, int $max): int
     {
         $packedIp = $this->getPackedIp($ip);
 

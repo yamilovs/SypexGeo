@@ -20,7 +20,7 @@ class FileProcessor extends AbstractProcessor
         // TODO: Implement getCountry() method.
     }
 
-    protected function getRawData(int $packFormat, int $start, int $length): string
+    protected function readRawData(int $packFormat, int $start, int $length): string
     {
         $begin = (PackFormat::REGION === $packFormat)
             ? $this->regionBeginPos
@@ -31,7 +31,7 @@ class FileProcessor extends AbstractProcessor
         return $this->reader->read($length);
     }
 
-    protected function getBlockPositionIndex(string $ip, int $min, int $max): int
+    protected function getIndexBlockPosition(string $ip, int $min, int $max): int
     {
         $packedIp = $this->getPackedIp($ip);
 

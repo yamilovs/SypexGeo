@@ -234,15 +234,21 @@ abstract class AbstractProcessor implements ProcessorInterface
         $raw = '';
 
         if ($start && $length) {
-            $raw = $this->getRawData($packFormat, $start, $length);
+            $raw = $this->readRawData($packFormat, $start, $length);
         }
 
         return $this->unpack($packFormat, $raw);
     }
 
-    abstract protected function getRawData(int $packFormat, int $start, int $length): string;
+    /**
+     * Reading raw packed data from the database
+     */
+    abstract protected function readRawData(int $packFormat, int $start, int $length): string;
 
-    abstract protected function getBlockPositionIndex(string $ip, int $min, int $max): int;
+    /**
+     * Return a block position in main index
+     */
+    abstract protected function getIndexBlockPosition(string $ip, int $min, int $max): int;
 
     /**
      * Find the data block in the first byte index

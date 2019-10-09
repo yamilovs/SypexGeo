@@ -39,9 +39,9 @@ class FileProcessorTest extends TestCase
                 }
             }
 
-            public function getRawData(int $packFormat, int $start, int $length): string
+            public function readRawData(int $packFormat, int $start, int $length): string
             {
-                return parent::getRawData($packFormat, $start, $length);
+                return parent::readRawData($packFormat, $start, $length);
             }
 
             public function getFirstByteIndexBlockRange(int $ip1n): array
@@ -80,7 +80,7 @@ class FileProcessorTest extends TestCase
             ->with($length)
             ->willReturn(pack('c', 100));
 
-        $processor->getRawData($packFormat, $start, $length);
+        $processor->readRawData($packFormat, $start, $length);
     }
 
     public function testFirstByteIndexBlock(): void

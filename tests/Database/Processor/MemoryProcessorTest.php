@@ -39,9 +39,9 @@ class MemoryProcessorTest extends TestCase
                 }
             }
 
-            public function getRawData(int $packFormat, int $start, int $length): string
+            public function readRawData(int $packFormat, int $start, int $length): string
             {
-                return parent::getRawData($packFormat, $start, $length);
+                return parent::readRawData($packFormat, $start, $length);
             }
         };
     }
@@ -64,7 +64,7 @@ class MemoryProcessorTest extends TestCase
         $processor->regionDatabase = $regionDatabase;
         $processor->cityDatabase = $cityDatabase;
 
-        $result = $processor->getRawData($packFormat, 0, strlen($expected));
+        $result = $processor->readRawData($packFormat, 0, strlen($expected));
 
         $this->assertEquals($expected, $result);
     }
