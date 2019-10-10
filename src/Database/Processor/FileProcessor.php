@@ -5,21 +5,9 @@ declare(strict_types=1);
 namespace Yamilovs\SypexGeo\Database\Processor;
 
 use Yamilovs\SypexGeo\Database\PackFormat;
-use Yamilovs\SypexGeo\City;
-use Yamilovs\SypexGeo\Country;
 
 class FileProcessor extends AbstractProcessor
 {
-    public function getCity(string $ip): City
-    {
-        // TODO: Implement getCity() method.
-    }
-
-    public function getCountry(string $ip): Country
-    {
-        // TODO: Implement getCountry() method.
-    }
-
     protected function readRawData(int $packFormat, int $start, int $length): string
     {
         $begin = (PackFormat::REGION === $packFormat)

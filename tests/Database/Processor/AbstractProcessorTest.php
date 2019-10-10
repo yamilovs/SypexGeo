@@ -52,9 +52,6 @@ class AbstractProcessorTest extends TestCase
                 $this->rawDataPack->rewind();
             }
 
-            public function getCity(string $ip): City {}
-            public function getCountry(string $ip): Country {}
-
             protected function getDatabaseBlockPosition(string $ip, int $min, int $max): int
             {
                 return $this->databaseBlockPosition;

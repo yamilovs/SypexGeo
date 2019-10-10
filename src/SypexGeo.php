@@ -32,9 +32,14 @@ class SypexGeo
         $this->setUpProcessor($database, $mode);
     }
 
-    public function getCity(string $ip): City
+    public function getCity(string $ip, bool $full = false): City
     {
-        $this->processor->getCity($ip);
+        $this->processor->getCity($ip, $full);
+    }
+
+    public function getRegion(string $ip): Region
+    {
+        $this->processor->getRegion($ip);
     }
 
     public function getCountry(string $ip): Country

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Yamilovs\SypexGeo\Database\Processor;
 
 use Yamilovs\SypexGeo\City;
+use Yamilovs\SypexGeo\Country;
 use Yamilovs\SypexGeo\Database\Config;
 use Yamilovs\SypexGeo\Database\CountryIso;
 use Yamilovs\SypexGeo\Database\PackFormat;
 use Yamilovs\SypexGeo\Database\Reader;
 use Yamilovs\SypexGeo\Exception\InvalidIpException;
+use Yamilovs\SypexGeo\Region;
 
 abstract class AbstractProcessor implements ProcessorInterface
 {
@@ -287,7 +289,7 @@ abstract class AbstractProcessor implements ProcessorInterface
         return $this->getDatabaseBlockPosition($ip, $min, $max);
     }
 
-    protected function parseCity(string $ip, bool $withRelations = false): City
+    protected function parseCity(string $ip, bool $full = false): City
     {
         $this->validateIp($ip);
 
@@ -320,7 +322,7 @@ abstract class AbstractProcessor implements ProcessorInterface
                 ->setIso(CountryIso::ID_ISO[$cityData['country_id']]);
         }
 
-        if ($withRelations) {
+        if ($full) {
             if (isset($cityData)) {
                 $regionData = $this->readData($cityData['region_seek'], $this->config->maxRegionSize, PackFormat::REGION);
 
@@ -343,6 +345,21 @@ abstract class AbstractProcessor implements ProcessorInterface
         unset($cityData, $regionData, $countryData);
 
         return $city;
+    }
+
+    public function getCity(string $ip, bool $full = false): City
+    {
+        return $this->parseCity($ip, $full);
+    }
+
+    public function getRegion(string $ip): Region
+    {
+        return $this->parseCity($ip, true)->getRegion();
+    }
+
+    public function getCountry(string $ip): Country
+    {
+        return $this->parseCity($ip, true)->getCountry();
     }
 
     abstract protected function getDatabaseBlockPosition(string $ip, int $min, int $max): int;

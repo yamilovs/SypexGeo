@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Yamilovs\SypexGeo\Database\Processor;
 
-use Yamilovs\SypexGeo\City;
-use Yamilovs\SypexGeo\Country;
 use Yamilovs\SypexGeo\Database\Config;
 use Yamilovs\SypexGeo\Database\PackFormat;
 use Yamilovs\SypexGeo\Database\Reader;
@@ -38,16 +36,6 @@ class MemoryProcessor extends AbstractProcessor
         $this->cityDatabase = $this->config->citySize > 0
             ? $this->reader->read($this->config->citySize)
             : '';
-    }
-
-    public function getCity(string $ip): City
-    {
-        // TODO: Implement getCity() method.
-    }
-
-    public function getCountry(string $ip): Country
-    {
-        // TODO: Implement getCountry() method.
     }
 
     protected function readRawData(int $packFormat, int $start, int $length): string
