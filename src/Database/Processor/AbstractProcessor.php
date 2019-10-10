@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Yamilovs\SypexGeo\Database\Processor;
 
+use Yamilovs\SypexGeo\City;
 use Yamilovs\SypexGeo\Database\Config;
+use Yamilovs\SypexGeo\Database\CountryIso;
+use Yamilovs\SypexGeo\Database\PackFormat;
 use Yamilovs\SypexGeo\Database\Reader;
 use Yamilovs\SypexGeo\Exception\InvalidIpException;
 
@@ -282,6 +285,64 @@ abstract class AbstractProcessor implements ProcessorInterface
 
         // Find the desired range in the database
         return $this->getDatabaseBlockPosition($ip, $min, $max);
+    }
+
+    protected function parseCity(string $ip, bool $withRelations = false): City
+    {
+        $this->validateIp($ip);
+
+        $city = new City();
+        $country = $city->getCountry();
+        $region = $city->getRegion();
+
+        if (null === $position = $this->getBlockPosition($ip)) {
+            return $city;
+        }
+
+        if ($position < $this->config->countrySize) {
+            $countryData = $this->readData($position, $this->config->maxCountrySize, PackFormat::COUNTRY);
+
+            $country
+                ->setId($countryData['id'])
+                ->setIso($countryData['iso']);
+        } else {
+            $cityData = $this->readData($position, $this->config->maxCitySize, PackFormat::CITY);
+
+            $city
+                ->setId($cityData['id'])
+                ->setLatitude($cityData['lat'])
+                ->setLongitude($cityData['lon'])
+                ->setNameRu($cityData['name_ru'])
+                ->setNameEn($cityData['name_en']);
+
+            $country
+                ->setId($cityData['country_id'])
+                ->setIso(CountryIso::ID_ISO[$cityData['country_id']]);
+        }
+
+        if ($withRelations) {
+            if (isset($cityData)) {
+                $regionData = $this->readData($cityData['region_seek'], $this->config->maxRegionSize, PackFormat::REGION);
+
+                $region
+                    ->setId($regionData['id'])
+                    ->setIso($regionData['iso'])
+                    ->setNameRu($regionData['name_ru'])
+                    ->setNameEn($regionData['name_en']);
+
+                $countryData = $this->readData($regionData['country_seek'], $this->config->maxCountrySize, PackFormat::COUNTRY);
+            }
+
+            $country
+                ->setLatitude($countryData['lat'])
+                ->setLongitude($countryData['lon'])
+                ->setNameRu($countryData['name_ru'])
+                ->setNameEn($countryData['name_en']);
+        }
+
+        unset($cityData, $regionData, $countryData);
+
+        return $city;
     }
 
     abstract protected function getDatabaseBlockPosition(string $ip, int $min, int $max): int;
