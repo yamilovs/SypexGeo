@@ -31,6 +31,22 @@ class City
      */
     protected $nameEn;
 
+    /**
+     * @var Country
+     */
+    protected $country;
+
+    /**
+     * @var Region
+     */
+    protected $region;
+
+    public function __construct()
+    {
+        $this->country = new Country();
+        $this->region = new Region();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,5 +105,15 @@ class City
         $this->nameEn = $nameEn;
 
         return $this;
+    }
+
+    public function getCountry(): Country
+    {
+        return $this->country;
+    }
+
+    public function getRegion(): Region
+    {
+        return $this->region;
     }
 }
