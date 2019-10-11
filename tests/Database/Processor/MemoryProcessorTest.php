@@ -46,7 +46,7 @@ class MemoryProcessorTest extends TestCase
         };
     }
 
-    public function readDataProvider(): array
+    public function getRawDataProvider(): array
     {
         return [
             [PackFormat::COUNTRY, 'foo', 'bar', 'bar'],
@@ -56,7 +56,7 @@ class MemoryProcessorTest extends TestCase
     }
 
     /**
-     * @dataProvider readDataProvider
+     * @dataProvider getRawDataProvider
      */
     public function testGetRawData(int $packFormat, string $regionDatabase, string $cityDatabase, string $expected): void
     {

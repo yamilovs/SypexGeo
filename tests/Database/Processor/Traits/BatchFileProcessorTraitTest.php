@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Yamilovs\SypexGeo\Tests\Database\Processor;
+namespace Yamilovs\SypexGeo\Tests\Database\Processor\Traits;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Yamilovs\SypexGeo\Database\Config;
 use Yamilovs\SypexGeo\Database\PackFormat;
-use Yamilovs\SypexGeo\Database\Processor\FileProcessor;
+use Yamilovs\SypexGeo\Database\Processor\AbstractProcessor;
+use Yamilovs\SypexGeo\Database\Processor\Traits\BatchFileProcessorTrait;
 use Yamilovs\SypexGeo\Database\Reader;
 
-class FileProcessorTest extends TestCase
+class BatchFileProcessorTraitTest extends TestCase
 {
     /**
      * @var MockObject|Reader
@@ -29,9 +30,18 @@ class FileProcessorTest extends TestCase
         $this->config = $this->createMock(Config::class);
     }
 
-    protected function createProcessor(): FileProcessor
+    protected function createProcessor()
     {
-        return new class($this->reader, $this->config) extends FileProcessor {
+        return new class($this->reader, $this->config) extends AbstractProcessor
+        {
+            use BatchFileProcessorTrait {
+                readRawData as private readRawDataTrait;
+                getDatabaseBlockPosition as private getDatabaseBlockPositionTrait;
+            }
+
+            protected function getFirstByteIndexBlockRange(int $ip1n): array {}
+            protected function getIndexBlockPosition(string $ip, int $min, int $max): int {}
+
             public function __set(string $name, $value)
             {
                 if (property_exists($this, $name)) {
@@ -41,17 +51,17 @@ class FileProcessorTest extends TestCase
 
             public function readRawData(int $packFormat, int $start, int $length): string
             {
-                return parent::readRawData($packFormat, $start, $length);
+                return $this->readRawDataTrait($packFormat, $start, $length);
             }
 
-            public function getFirstByteIndexBlockRange(int $ip1n): array
+            public function getDatabaseBlockPosition(string $ip, int $min, int $max): int
             {
-                return parent::getFirstByteIndexBlockRange($ip1n);
+                return $this->getDatabaseBlockPositionTrait($ip, $min, $max);
             }
         };
     }
 
-    public function readDataProvider(): array
+    public function getRawDataProvider(): array
     {
         return [
             [PackFormat::COUNTRY, 5, 7, 7],
@@ -61,7 +71,7 @@ class FileProcessorTest extends TestCase
     }
 
     /**
-     * @dataProvider readDataProvider
+     * @dataProvider getRawDataProvider
      */
     public function testGetRawData(int $packFormat, int $regionPos, int $cityPos, int $expectedSeek): void
     {
@@ -81,16 +91,5 @@ class FileProcessorTest extends TestCase
             ->willReturn(pack('c', 100));
 
         $processor->readRawData($packFormat, $start, $length);
-    }
-
-    public function testFirstByteIndexBlock(): void
-    {
-        $processor = $this->createProcessor();
-        $processor->byteIndex = pack('NN', 100, 200);
-
-        $result = $processor->getFirstByteIndexBlockRange(1);
-
-        $this->assertIsArray($result);
-        $this->assertEquals([100, 200], $result);
     }
 }

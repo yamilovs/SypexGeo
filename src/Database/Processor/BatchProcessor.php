@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Yamilovs\SypexGeo\Database\Processor;
 
 use Yamilovs\SypexGeo\Database\Config;
+use Yamilovs\SypexGeo\Database\Processor\Traits\BatchFileProcessorTrait;
 use Yamilovs\SypexGeo\Database\Reader;
 
 class BatchProcessor extends AbstractProcessor
 {
+    use BatchFileProcessorTrait;
+
     /**
      * @var array
      */
@@ -27,11 +30,6 @@ class BatchProcessor extends AbstractProcessor
         $this->mainIndexArray = str_split($this->mainIndex, static::MAIN_INDEX_BYTES);
 
         unset ($this->byteIndex, $this->mainIndex);
-    }
-
-    protected function readRawData(int $packFormat, int $start, int $length): string
-    {
-        // TODO: Same as FileProcessor::readRawData()
     }
 
     protected function getIndexBlockPosition(string $ip, int $min, int $max): int
@@ -55,10 +53,5 @@ class BatchProcessor extends AbstractProcessor
     protected function getFirstByteIndexBlockRange(int $ip1n): array
     {
         return [$this->byteIndexArray[$ip1n-1], $this->byteIndexArray[$ip1n]];
-    }
-
-    protected function getDatabaseBlockPosition(string $ip, int $min, int $max): int
-    {
-        // TODO: Same as FileProcessor::getDatabaseBlockPosition()
     }
 }

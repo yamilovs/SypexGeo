@@ -6,10 +6,13 @@ namespace Yamilovs\SypexGeo\Database\Processor;
 
 use Yamilovs\SypexGeo\Database\Config;
 use Yamilovs\SypexGeo\Database\PackFormat;
+use Yamilovs\SypexGeo\Database\Processor\Traits\MemoryFileProcessorTrait;
 use Yamilovs\SypexGeo\Database\Reader;
 
 class MemoryProcessor extends AbstractProcessor
 {
+    use MemoryFileProcessorTrait;
+
     /**
      * @var string
      */
@@ -43,16 +46,6 @@ class MemoryProcessor extends AbstractProcessor
         $db = PackFormat::REGION === $packFormat ? $this->regionDatabase : $this->cityDatabase;
 
         return substr($db, $start, $length);
-    }
-
-    protected function getIndexBlockPosition(string $ip, int $min, int $max): int
-    {
-        // TODO: Same as FileProcessor::getIndexBlockPosition()
-    }
-
-    protected function getFirstByteIndexBlockRange(int $ip1n): array
-    {
-        // TODO: Same as FileProcessor::getFirstByteIndexBlockRange()
     }
 
     protected function getDatabaseBlockPosition(string $ip, int $min, int $max): int
