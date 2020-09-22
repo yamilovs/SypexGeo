@@ -143,7 +143,7 @@ abstract class AbstractProcessor implements ProcessorInterface
 
         foreach ($format AS $part) {
             [$type, $name] = explode(':', $part);
-            $type0 = $type{0};
+            $type0 = $type[0];
 
             if (!$item) {
                 $unpacked[$name] = in_array($type0, ['b','c']) ? '' : 0;
@@ -197,7 +197,7 @@ abstract class AbstractProcessor implements ProcessorInterface
                     $value = unpack('S', $pack);
                     break;
                 case 'm':
-                    $value = unpack('l', $pack.((ord($pack{2}) >> 7) ? "\xff" : "\0"));
+                    $value = unpack('l', $pack.((ord($pack[2]) >> 7) ? "\xff" : "\0"));
                     break;
                 case 'M':
                     $value = unpack('L', $pack."\0");
@@ -215,10 +215,10 @@ abstract class AbstractProcessor implements ProcessorInterface
                     $value = unpack('d', $pack);
                     break;
                 case 'n':
-                    $value = current(unpack('s', $pack)) / 10 ** $type{1};
+                    $value = current(unpack('s', $pack)) / 10 ** $type[1];
                     break;
                 case 'N':
-                    $value = current(unpack('l', $pack)) / 10 ** $type{1};
+                    $value = current(unpack('l', $pack)) / 10 ** $type[1];
                     break;
                 case 'c':
                     $value = rtrim($pack, ' ');
